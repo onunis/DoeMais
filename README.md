@@ -46,7 +46,7 @@ DoeMais-main/
 ## ▶️ Como Executar
 
 1. **Pré-requisitos:**
-   - Python 3 instalado no sistema.
+   - Python 3.11 instalado no sistema.
 
 2. **Clone ou extraia o projeto:**
    ```bash

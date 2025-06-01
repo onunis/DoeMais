@@ -5,7 +5,7 @@ from banco import criar_tabela
 
 criar_tabela()
 
-
+#
 root = tk.Tk()
 root.title("Doe+")
 root.geometry("800x600")

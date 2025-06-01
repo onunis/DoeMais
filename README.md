@@ -54,13 +54,11 @@ DoeMais-main/
    # ou
    unzip DoeMais-main.zip
 
-cd DoeMais-main
-python main.py
 
-🔐 Login
+## 🔐 Login
 O sistema utiliza uma verificação básica de login (sem senha por padrão, mas o código permite implementar autenticação com mais segurança, se necessário).
 
-🧠 Lógica do Sistema
+## 🧠 Lógica do Sistema
 A execução inicia por main.py, que chama a tela de login.
 
 Após o login, o usuário é redirecionado à principal.py, onde há navegação para:
@@ -71,7 +69,7 @@ doacoes.py – onde é possível consultar as doações já registradas.
 
 O módulo banco.py centraliza a lógica de acesso e manipulação do banco de dados SQLite.
 
-🎯 Objetivo Acadêmico
+## 🎯 Objetivo Acadêmico
 Este projeto foi desenvolvido como parte de um trabalho acadêmico com o objetivo de aplicar conceitos de:
 
 Programação orientada a objetos
@@ -82,15 +80,15 @@ Persistência de dados com SQLite
 
 Modularização de código e boas práticas de organização
 
-📸 Capturas de Tela
+## 📸 Capturas de Tela
 '''Inserir'''
 
-👨‍💻 Autor
+## 👨‍💻 Autores
 Nome: Guilherme de Araújo Nunes, Larissa Gabriel dos Santos e Gabriel Alves Campos
 
 Curso: Análise e Desenvolvimento de Sistemas
 
 Disciplina: Desenvolvimento Rápido de Aplicações em Python 2025.1
 
-📄 Licença
+## 📄 Licença
 Este projeto é de cunho acadêmico e livre para aprendizado.

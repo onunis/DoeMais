@@ -50,7 +50,7 @@ DoeMais-main/
 
 2. **Clone ou extraia o projeto:**
    ```bash
-   git clone <url-do-repositorio>
+   git clone https://github.com/onunis/DoeMais.git
    # ou
    unzip DoeMais-main.zip
 

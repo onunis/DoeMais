@@ -1,6 +1,6 @@
 # DoeMais
 
-**DoeMais** é uma aplicação desenvolvida em Python com interface gráfica feita em `Tkinter`. Seu objetivo é gerenciar e registrar doações feitas por usuários, facilitando o controle e visualização dos dados de doação. O projeto foca em acessibilidade e praticidade, sendo ideal para organizações sociais, ONGs ou projetos de caridade.
+**DoeMais** é uma aplicação desenvolvida em Python com interface gráfica feita em `Tkinter` e a utilização de `CRUD` para a manipulação de dados. Seu objetivo é gerenciar e registrar doações feitas por usuários, facilitando o controle e visualização dos dados de doação. O projeto foca em acessibilidade e praticidade, sendo ideal para organizações sociais, ONGs ou projetos de caridade.
 
 ---
 

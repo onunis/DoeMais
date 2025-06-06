@@ -1,25 +1,30 @@
-# paginas/formulario.py
 import tkinter as tk
 from tkinter import messagebox
-from banco import conectar
+from bd.banco import conectar
 from paginas.doacoes import atualizar_tabela_global
+from paginas.relatorio import registrar_log 
 
 def criar_formulario(pai):
-    frame = tk.Frame(pai, bg="#26b9d1") 
+    frame = tk.Frame(pai, bg="#466064") 
     frame.pack(expand=True, fill="both")
 
-    tk.Label(frame, text="Faça uma doação", font=("Arial", 20), bg="#26b9d1").pack(pady=10)
+    tamanho_fonte_emoji = 35
+    label_pombas = tk.Label(frame, text="🕊️🕊️🕊️🕊️", font=("Arial", tamanho_fonte_emoji), bg="#466064")
+    label_pombas.pack(pady=(10, 5))
 
-    campos = ["Nome", "Item", "Quantidade", "Observações"]
+    tk.Label(frame, text="Faça uma doação", font=("Helvetica", 18, "bold"), bg="#466064", fg="white").pack(pady=10)
+    tk.Label(frame, text="Você não sabe o quanto a sua ajuda é importante, por mais simples que pareça. Vale a pena, pratique este ato de amor.", font=("Helvetica", 10), bg="#466064", fg="white").pack(pady=10)
+
+    campos = ["Nome completo", "Item", "Quantidade", "Observações"]
     entradas = []
 
     for campo in campos:
-        tk.Label(frame, text=campo, bg="#26b9d1").pack()
+        tk.Label(frame, text=campo, bg="#466064", fg="white").pack()
         entrada = tk.Entry(frame)
         entrada.pack()
         entradas.append(entrada)
 
-    tk.Label(frame, text="ONG", bg="#26b9d1").pack()
+    tk.Label(frame, text="ONG", bg="#466064", fg="white").pack()
     ong_var = tk.StringVar()
     ong_var.set("ONG Esperança")
     opcoes_ongs = ["ONG Esperança", "ONG Amor ao Proximo", "ONG Cuidar", "ONG Unidos por Todos", "ONG Mundo Melhor"]
@@ -28,8 +33,8 @@ def criar_formulario(pai):
     var1 = tk.IntVar()
     var2 = tk.IntVar()
 
-    tk.Checkbutton(frame, text="Aceita os termos?", variable=var1, bg="#26b9d1").pack()
-    tk.Checkbutton(frame, text="Confirmar doação?", variable=var2, bg="#26b9d1").pack()
+    tk.Checkbutton(frame, text="Aceita os termos?", variable=var1, bg="#466064").pack()
+    tk.Checkbutton(frame, text="Confirmar doação?", variable=var2, bg="#466064").pack()
 
     def doar():
         if not var1.get() or not var2.get():
@@ -47,9 +52,18 @@ def criar_formulario(pai):
                            (*valores, ong_var.get()))
             conn.commit()
 
+            nome_doador = valores[0]
+            item_dado = valores[1]
+            registrar_log(nome_doador, f"Item: {item_dado}, ONG: {ong_var.get()}", "Adição")
+
         atualizar_tabela_global()
         messagebox.showinfo("Sucesso", "Doação registrada.")
         for e in entradas:
             e.delete(0, tk.END)
 
     tk.Button(frame, text="Doar", command=doar).pack(pady=10)
+
+    label_pombas = tk.Label(frame, text="🕊️🕊️🕊️🕊️", font=("Arial", tamanho_fonte_emoji), bg="#466064") 
+    label_pombas.pack(pady=(10, 5))
+
+    return frame

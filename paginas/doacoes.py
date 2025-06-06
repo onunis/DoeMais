@@ -1,6 +1,7 @@
 import tkinter as tk
 from tkinter import ttk, messagebox
-from banco import conectar
+from bd.banco import conectar
+from paginas.relatorio import registrar_log  
 
 tabela_global = None
 
@@ -20,12 +21,12 @@ def atualizar_tabela_global():
 
 def criar_pagina_doacoes(pai, usuario_logado):
     global tabela_global
-    frame = tk.Frame(pai, bg="#26b9d1")
+    frame = tk.Frame(pai, bg="#3d6c74")
     frame.pack(expand=True, fill="both") 
 
-    tk.Label(frame, text="Doações", font=("Arial", 20), bg="#26b9d1").pack(pady=10)
+    tk.Label(frame, text="Doações", font=("Arial", 20), bg="#3d6c74", fg="white").pack(pady=10)
 
-    colunas = ["Nome", "Item", "Quantidade", "Observações", "ONG"]
+    colunas = ["Nome completo", "Item", "Quantidade", "Observações", "ONG"]
     tabela = ttk.Treeview(frame, columns=colunas, show="headings")
     tabela_global = tabela
 
@@ -46,25 +47,38 @@ def criar_pagina_doacoes(pai, usuario_logado):
         if usuario_logado.get("nome") != "adm":
             messagebox.showerror("Erro", "Apenas o usuário 'adm' pode excluir.")
             return
+
         item = tabela.selection()
         if not item:
             messagebox.showwarning("Aviso", "Selecione uma doação.")
             return
+
+        confirmacao = messagebox.askyesno("Confirmação", "Tem certeza que deseja excluir?")
+        if not confirmacao:
+            return
+
         id_selecionado = item[0]
         with conectar() as conn:
             cursor = conn.cursor()
             cursor.execute("DELETE FROM doacoes WHERE id=?", (id_selecionado,))
             conn.commit()
+
+        quem = "ADM" if usuario_logado.get("nome") == "adm" else usuario_logado.get("nome")
+        registrar_log(quem, f"Doação ID: {id_selecionado}", "Exclusão")
+
         atualizar_tabela_global()
+        messagebox.showinfo("Sucesso", "Doação excluída com sucesso.")
 
     def editar():
         if usuario_logado.get("nome") != "adm":
             messagebox.showerror("Erro", "Apenas o usuário 'adm' pode editar.")
             return
+
         item = tabela.selection()
         if not item:
             messagebox.showwarning("Aviso", "Selecione uma doação.")
             return
+
         id_selecionado = item[0]
         valores = tabela.item(id_selecionado, "values")
 
@@ -74,7 +88,7 @@ def criar_pagina_doacoes(pai, usuario_logado):
         edit_win.resizable(False, False)
 
         entradas = []
-        campos = ["Nome", "Item", "Quantidade", "Observações", "ONG"]
+        campos = ["Nome completo", "Item", "Quantidade", "Observações", "ONG"]
         for i, campo in enumerate(campos):
             tk.Label(edit_win, text=campo).pack()
             e = tk.Entry(edit_win)
@@ -91,8 +105,13 @@ def criar_pagina_doacoes(pai, usuario_logado):
                     WHERE id=?
                 """, (*novos_valores, id_selecionado))
                 conn.commit()
+
+            quem = "ADM" if usuario_logado.get("nome") == "adm" else usuario_logado.get("nome")
+            registrar_log(quem, f"Doação ID: {id_selecionado}", "Edição")
+
             atualizar_tabela_global()
             edit_win.destroy()
+            messagebox.showinfo("Sucesso", "Doação atualizada com sucesso.")
 
         tk.Button(edit_win, text="Salvar", command=salvar).pack(pady=10)
 

@@ -1,21 +1,26 @@
 import tkinter as tk
 from tkinter import messagebox
-from banco import conectar
+from bd.banco import conectar
+from paginas.relatorio import registrar_log 
 
 def criar_pagina_login(pai, trocar_tela, usuario_logado):
-    frame = tk.Frame(pai, bg="#26b9d1")  
+    frame = tk.Frame(pai, bg="#173438")  
     frame.pack(expand=True, fill="both")
 
-    conteudo = tk.Frame(frame, bg="#26b9d1")
+    conteudo = tk.Frame(frame, bg="#173438")
     conteudo.pack(expand=True)
 
-    tk.Label(conteudo, text="Login", font=("Arial", 20), bg="#26b9d1").pack(pady=20)
+    tamanho_fonte_emoji = 35
+    label_pombas = tk.Label(conteudo, text="🕊️🕊️🕊️🕊️", font=("Arial", tamanho_fonte_emoji), bg="#173438")
+    label_pombas.pack(pady=(10, 5))
 
-    tk.Label(conteudo, text="Usuário:", bg="#26b9d1").pack()
+    tk.Label(conteudo, text="Faça seu login", font=("Arial", 22), bg="#173438", fg="white").pack(pady=20)
+
+    tk.Label(conteudo, text="Usuário:", bg="#173438", fg="white").pack()
     entrada_usuario = tk.Entry(conteudo)
     entrada_usuario.pack()
 
-    tk.Label(conteudo, text="Senha:", bg="#26b9d1").pack()
+    tk.Label(conteudo, text="Senha:", bg="#173438", fg="white").pack()
     entrada_senha = tk.Entry(conteudo, show="*")
     entrada_senha.pack()
 
@@ -27,6 +32,7 @@ def criar_pagina_login(pai, trocar_tela, usuario_logado):
             cursor.execute("SELECT * FROM usuarios WHERE usuario=? AND senha=?", (usuario, senha))
             if cursor.fetchone():
                 usuario_logado["nome"] = usuario
+                registrar_log(usuario, "Login realizado", "Login")  
                 trocar_tela("principal")
             else:
                 messagebox.showerror("Erro", "Usuário ou senha inválidos")
@@ -62,6 +68,7 @@ def criar_pagina_login(pai, trocar_tela, usuario_logado):
                 try:
                     cursor.execute("INSERT INTO usuarios (usuario, senha) VALUES (?, ?)", (u, s))
                     conn.commit()
+                    registrar_log(u, "Usuário criado", "Cadastro")  
                     messagebox.showinfo("Sucesso", "Usuário cadastrado!")
                     cadastro_win.destroy()
                 except:
@@ -70,6 +77,7 @@ def criar_pagina_login(pai, trocar_tela, usuario_logado):
         tk.Button(cadastro_win, text="Cadastrar", command=cadastrar).pack(pady=10)
 
     tk.Button(conteudo, text="Entrar", command=login).pack(pady=10)
+    tk.Label(conteudo, text="Ainda não possui cadastro?", font=("Arial", 10), bg="#173438", fg="white").pack(pady=20)
     tk.Button(conteudo, text="Cadastrar novo usuário", command=abrir_cadastro).pack()
 
     return frame
